@@ -5,4 +5,4 @@
 
 对应硬件连接方式
 
-![keyboard](img/keyboard.jpg)
+<img src="/img/keyboard.jpg" width="400px">
