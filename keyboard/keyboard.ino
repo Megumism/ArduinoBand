@@ -6,8 +6,8 @@ const char key[row][col] = {
     {31, 32, 33, 34},
     {41, 42, 43, 44}};
 const int debounce = 20;
-const int rowPins[row] = {4, 5, 6, 7};
-const int colPins[col] = {8, 9, 10, 11};
+const int rowPins[row] = {8, 9, 10, 11};
+const int colPins[col] = {4, 5, 6, 7};
 
 bool tested = false;
 
@@ -19,21 +19,21 @@ void setup()
         pinMode(colPins[i], OUTPUT);
         digitalWrite(colPins[i], HIGH);
         Serial.print(colPins[i]);
-        Serial.println(" Setup finished");
+        Serial.println(" Setup finished");//调试用语句
     }
-    for (int i = 0; i < row; i++)//行设为读取，初始化为高
+    for (int i = 0; i < row; i++)//行设为读取，开启上拉电阻（为了复位）
     {
         pinMode(rowPins[i], INPUT);
         digitalWrite(rowPins[i], HIGH);
         Serial.print(rowPins[i]);
-        Serial.println(" Setup finished");
+        Serial.println(" Setup finished");//调试用语句
     }
 }
 
 void loop()
 {
     int key = getKey();
-    if (key)
+    if (key)//调试用语句
     {
         Serial.println(int(key));
     }
