@@ -2,5 +2,5 @@
     "port": "COM3",
     "board": "arduino:avr:uno",
     "programmer": "AVRISP mkII",
-    "sketch": "keyboard\\keyboard.ino"
+    "sketch": "LCD\\1602.ino"
 }
