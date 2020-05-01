@@ -1,3 +1,5 @@
+// #include "keyboard.h"
+
 const char row = 4;
 const char col = 4;
 const char key[row][col] = {
@@ -9,11 +11,9 @@ const int debounce = 20;
 const int rowPins[row] = {8, 9, 10, 11};
 const int colPins[col] = {4, 5, 6, 7};
 
-bool tested = false;
-
 void setup()
 {
-    Serial.begin(9600);
+    // Serial.begin(9600);
     for (int i = 0; i < col; i++)//列设为输出高电平
     {
         pinMode(colPins[i], OUTPUT);
@@ -30,14 +30,14 @@ void setup()
     }
 }
 
-void loop()
-{
-    int key = getKey();
-    if (key)//调试用语句
-    {
-        Serial.println(int(key));
-    }
-}
+// void loop()
+// {
+//     int key = getKey();
+//     if (key)//调试用语句
+//     {
+//         Serial.println(int(key));
+//     }
+// }
 
 char getKey()
 {
@@ -47,12 +47,6 @@ char getKey()
         digitalWrite(colPins[i], LOW);
         for (int j = 0; j < row; j++)
         {
-            // if (!tested)
-            // {
-            //     Serial.print(digitalRead(rowPins[j]));
-            //     Serial.print(i);
-            //     Serial.println(j);
-            // }
             if (digitalRead(rowPins[j]) == LOW)
             {
                 delay(debounce);
@@ -62,6 +56,5 @@ char getKey()
         }
         digitalWrite(colPins[i], HIGH);
     }
-    tested = true;
     return input;
 }
