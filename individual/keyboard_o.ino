@@ -1,5 +1,3 @@
-// #include "keyboard.h"
-
 const char row = 4;
 const char col = 4;
 const char key[row][col] = {
@@ -30,14 +28,14 @@ void setup()
     }
 }
 
-// void loop()
-// {
-//     int key = getKey();
-//     if (key)//调试用语句
-//     {
-//         Serial.println(int(key));
-//     }
-// }
+void loop()
+{
+    int key = getKey();
+    if (key)//调试用语句
+    {
+        Serial.println(int(key));
+    }
+}
 
 char getKey()
 {

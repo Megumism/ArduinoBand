@@ -9,7 +9,7 @@ void setup()
 void loop()
 {
     int key = keyboard.getKey();
-    if (key)//调试用语句
+    if (key)//调试键盘用语句
     {
         Serial.println(int(key));
     }
