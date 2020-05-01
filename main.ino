@@ -1,5 +1,5 @@
 # include "keyboard44.h"
-keyboard44 keyboard;
+keyboard44 keyboard(A0);
 
 void setup()
 {

@@ -13,11 +13,11 @@ private:
         {31, 32, 33, 34},
         {41, 42, 43, 44}};
     int KBdebounce = 20;
-    int KBcolPins[4];
-    int KBrowPins[4];
+    uint8_t KBcolPins[4];
+    uint8_t KBrowPins[4];
 
 public:
-    keyboard44(int pin1, int pin2, int pin3, int pin4, int pin5, int pin6, int pin7, int pin8); //键盘正面看下去从左往右数
+    keyboard44(const uint8_t pin1 = 4, const uint8_t pin2 = 5, const uint8_t pin3 = 6, const uint8_t pin4 = 7, const uint8_t pin5 = 8, const uint8_t pin6 = 9, const uint8_t pin7 = 10, const uint8_t pin8 = 11);
     void setKey(char key, char row, char col);
     char getKey();
 };
