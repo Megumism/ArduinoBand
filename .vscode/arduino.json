@@ -2,5 +2,5 @@
     "port": "COM3",
     "board": "arduino:avr:uno",
     "programmer": "AVRISP mkII",
-    "sketch": "main.ino"
+    "sketch": "Garbage_Band_beta_.ino"
 }

@@ -1,4 +1,4 @@
-const char row = 4;
+/* const char row = 4;
 const char col = 4;
 const char key[row][col] = {
     {11, 12, 13, 14},
@@ -55,4 +55,4 @@ char getKey()
         digitalWrite(colPins[i], HIGH);
     }
     return input;
-}
+} */
