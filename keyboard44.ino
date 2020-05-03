@@ -54,20 +54,3 @@ char keyboard44::getKey()
     }
     return input;
 }
-
-void keyboard44::changeKey()
-{
-    //键值变更
-    char KBkey[4][4] = {
-        {'1', '2', '3', 'A'},
-        {'4', '5', '6', 'B'},
-        {'7', '8', '9', 'C'},
-        {'*', '0', '#', 'D'}};
-    for (char i = 0; i < 4; i++)
-    {
-        for (char j = 0; j < 4; j++)
-        {
-            keyboard.setKey(KBkey[i][j],i,j);
-        }
-    }
-}

@@ -37,7 +37,6 @@ void setup()
 {
     Display.welcome(); //welcome
     pinMode(Buzzer, OUTPUT); //buzzer OUTPUT
-    keyboard.changeKey(); //change the key
     Serial.begin(9600);
 }
 
