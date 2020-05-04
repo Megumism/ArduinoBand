@@ -1,54 +1,57 @@
 #include "Display.h"
-//中央C
-float C3 = 261.63;
+
 void Display::music()
 {
-    /*�Ÿ裬��ʽΪ
-      b7--- 6- 2- 4---
-      ���������ֹ���
-    */
+float Frequency, Duration, xx;
+int sum = 0;
+
     lcd.begin(16, 2);
-    lcd.print("Enjoy Your song!");
-    lcd.setCursor(0, 1);
+    lcd.setCursor(0,0);
+
     for (int i = 0; i < num; i++)
     {
-
-        //���������
-        if (UpDown[i] == 1)
-        {
-            lcd.print('#');
-        }
-        if (UpDown[i] == -1)
-        {
-            lcd.print('b');
-        }
-
-        //����������
-        xx = Dura[i]; //��������ת��
+        if (UpDown[i] == 1) lcd.print('#');
+        if (UpDown[i] == -1) lcd.print('b');
+        
+        lcd.print(RealNote[i]);
+        
+        xx = Dura[i];          //change the type from int to float
         sum += Dura[i];
         Duration = xx / Rhythm * 60 * 1000;
         Frequency = C3 * pow(1.059463, Note[i]);
         tone(Buzzer, Frequency, Duration);
-
-        //�������1-7
-        lcd.print(RealNote[i]);
-        if (sum >= 4)
-        {
-            lcd.scrollDisplayLeft();
-        } //�����һ��
-
-        //�������
         delay(Duration / xx);
+        
         for (int j = 0; j <= Dura[i] - 2; j++)
         {
             lcd.print('-');
             delay(Duration / xx);
-            if (sum >= 12)
-            {
-                lcd.scrollDisplayLeft();
-            } //���������
         }
+        lcd.print(" ");
 
-        lcd.print(" "); //����֮��ķָ�
+        if (sum % metre == 0) //一个小节的末尾
+        {
+            pinX++; //小节数++
+            pin[pinX] = i + 1; //记录每一个小节开头音符对应的序号
+            if (sum/metre == 1) //第一个小节末尾，直接输出光标下移
+            {
+                lcd.print('|');
+                lcd.setCursor(0,1);
+            }
+            else //其余小节末尾，作翻页操作
+            {
+                lcd.clear();
+                lcd.begin(16,2);
+                for (int j = pin[pinX - 1]; j <= i; j++)
+                {
+                    lcd.print(RealNote[j]);
+                    for (int k = 0; k <= Dura[j] - 2; k++) lcd.print('-');
+                    lcd.print(" ");
+                }
+                lcd.print('|');
+                lcd.setCursor(0,1);                  
+            }
+        }
     }
+    pin[num + 1] = num;
 }
