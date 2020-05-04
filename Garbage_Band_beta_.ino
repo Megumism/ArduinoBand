@@ -19,23 +19,13 @@ LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 //get information
 GetThing getThing;
 
-byte smiley[8] = {
-    B00000,
-    B10001,
-    B00000,
-    B00000,
-    B10001,
-    B01110,
-    B00000,
-};
-
 void setup()
 {
     //welcome
     lcd.begin(16, 2); //设置列行值
     lcd.print("   Welcome to");
     lcd.setCursor(0, 1); //光标跳转到下一行
-    
+
     lcd.print(" ");
     lcd.write(B10100010);
     lcd.print("Garbage Band");
@@ -47,14 +37,18 @@ void setup()
     Serial.begin(9600);
 }
 
-bool songExisitence = false;
-
 void loop()
 {
-
     //显示开始界面，并且让使用者选择：1.制谱 2.游戏
-    lcd.begin(16, 2); //设置列行值
-    lcd.print("     *:Song");
+    lcd.begin(16, 2);
+    if (getThing.songExisitence)
+    {
+        lcd.print("*:Song  D:Replay");
+    }
+    else
+    {
+        lcd.print("     *:Song     ");
+    }
     lcd.setCursor(0, 1); //设置光标到第二行第一列
     lcd.print("     #:Game");
 
@@ -75,23 +69,37 @@ void loop()
         //show recording for a while
         lcd.begin(16, 2);
         lcd.print("  Recording...");
-        delay(2000);
+        delay(1500);
 
         music();     //play the music
         delay(1000); //stop for a while
         score();     //review the score
 
-        //complimentaryAmazing!|Back to menu..
+        //complimentary: Amazing!|Back to menu..
         lcd.begin(16, 2);
         lcd.print("    Amazing!");
         lcd.setCursor(0, 1);
         lcd.print(" Back to menu..");
-        delay(2000);
+        delay(1500);
     }
 
     //#.game
     else if (key == '#')
     {
+    }
+
+    //D.Replay
+    else if (key == 'D')
+    {
+        music();     //play the music
+        delay(1000); //stop for a while
+                
+        //complimentary: Amazing!|Back to menu..
+        lcd.begin(16, 2);
+        lcd.print("    Amazing!");
+        lcd.setCursor(0, 1);
+        lcd.print(" Back to menu..");
+        delay(1000);
     }
 }
 

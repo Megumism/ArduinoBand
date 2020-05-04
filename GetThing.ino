@@ -1,6 +1,6 @@
 #include "GetThing.h"
 
-void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
+void GetThing::getMusic(LiquidCrystal lcd, keyboard44 keyboard)
 {
     int note = 0, beat = 0, lr = 0;
     char key = 0;
@@ -130,9 +130,10 @@ void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
                 break; //press D twice and break
         }
     }
+    songExisitence = true;
 }
 
-void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
+void GetThing::getPace(LiquidCrystal lcd, keyboard44 keyboard)
 {
     char key = 0;
     //get BPM: beat per minute
@@ -190,7 +191,7 @@ void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
     }
 }
 
-void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
+void GetThing::getTone(LiquidCrystal lcd, keyboard44 keyboard)
 {
     char Toneflag = 'C'; // Toneflag:A-G
     int letter = 0;      // 0 means C, 1 means D
@@ -199,9 +200,9 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
     lcd.begin(16, 2);
     lcd.print("Tone:");
     lcd.setCursor(0, 1);
-    lcd.write(B01111111);//←
+    lcd.write(B01111111); //←
     lcd.print(" C ");
-    lcd.write(B01111110);//→
+    lcd.write(B01111110); //→
 
     while (key != 'D')
     {
@@ -251,4 +252,5 @@ void GetThing::Initialize()
     metre = 0;
     num = 0;
     pinX = 0;
+    songExisitence = false;
 }

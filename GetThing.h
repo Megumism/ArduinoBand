@@ -19,6 +19,7 @@ public:
 	int pin[100] = {0};
 	//Tone:distance from C3( E is +4 ); Rhythm:BPM; metre:小节拍数; num:the total number of notes; pinX:小节数
 	int Tone = 0, Rhythm = 0, metre = 0, num = 0, pinX = 0;
+	bool songExisitence = false;//是否有歌
 
 	void getTone(LiquidCrystal lcd, keyboard44 keyboard);
 	void getPace(LiquidCrystal lcd, keyboard44 keyboard);
