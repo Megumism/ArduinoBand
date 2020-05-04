@@ -85,7 +85,7 @@ void play1Note(){
 
 void music()
 {
-    float Frequency, Duration, xx;
+    float Frequency, Duration;
     int sum = 0;
 
     lcd.begin(16, 2);
@@ -100,17 +100,16 @@ void music()
 
         lcd.print(getThing.RealNote[i]);
 
-        xx = getThing.Dura[i]; //change the type from int to float
         sum += getThing.Dura[i];
-        Duration = xx / getThing.Rhythm * 60 * 1000;
+        Duration = getThing.Dura[i] / getThing.Rhythm * 60.0 * 1000.0;
         Frequency = C3 * pow(1.059463, getThing.Note[i]);
         tone(Buzzer, Frequency, Duration);
-        delay(Duration / xx);
+        delay(Duration / float(getThing.Dura[i]));
 
         for (int j = 0; j <= getThing.Dura[i] - 2; j++)
         {
             lcd.print('-');
-            delay(Duration / xx);
+            delay(Duration / float(getThing.Dura[i]));
         }
         lcd.print(" ");
 
