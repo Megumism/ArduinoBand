@@ -1,6 +1,6 @@
-#include "GetThing.h"
+#include "Music.h"
 
-void GetThing::getMusic(LiquidCrystal lcd, keyboard44 keyboard)
+void Music::getMusic(LiquidCrystal lcd, keyboard44 keyboard)
 {
     int note = 0, beat = 0, lr = 0;
     char key = 0;
@@ -133,7 +133,7 @@ void GetThing::getMusic(LiquidCrystal lcd, keyboard44 keyboard)
     songExisitence = true;
 }
 
-void GetThing::getPace(LiquidCrystal lcd, keyboard44 keyboard)
+void Music::getPace(LiquidCrystal lcd, keyboard44 keyboard)
 {
     char key = 0;
     //get BPM: beat per minute
@@ -162,11 +162,11 @@ void GetThing::getPace(LiquidCrystal lcd, keyboard44 keyboard)
     }
 }
 
-void GetThing::getMetre(LiquidCrystal lcd, keyboard44 keyboard)//3/4, 9/8
-{                    
+void Music::getMetre(LiquidCrystal lcd, keyboard44 keyboard) //3/4, 9/8
+{
     char key = 0;
     bool lr = false; // left or right ,false means left, true means right
-    
+
     lcd.begin(16, 2);
     lcd.print("Metre:");
     lcd.setCursor(1, 1);
@@ -185,8 +185,15 @@ void GetThing::getMetre(LiquidCrystal lcd, keyboard44 keyboard)//3/4, 9/8
             if ((key >= '1') && (key <= '9'))
             {
                 lcd.print(key);
-                if (lr == 0)
+                if (!lr) //在左边则赋值
+                {
                     metre = key - '0';
+                    lr = true; //自动跳转
+                }
+                else
+                {
+                    key = 'D'; //自动跳转*2 当然这个比较弱智
+                }
             }
             lcd.setCursor(2 * lr, 1);
             lcd.blink();
@@ -194,7 +201,7 @@ void GetThing::getMetre(LiquidCrystal lcd, keyboard44 keyboard)//3/4, 9/8
     }
 }
 
-void GetThing::getTone(LiquidCrystal lcd, keyboard44 keyboard)
+void Music::getTone(LiquidCrystal lcd, keyboard44 keyboard)
 {
     char Toneflag = 'C'; // Toneflag:A-G
     int letter = 0;      // 0 means C, 1 means D
@@ -244,7 +251,7 @@ void GetThing::getTone(LiquidCrystal lcd, keyboard44 keyboard)
     Tone += TONE2[letter + 2];
 }
 
-void GetThing::Initialize()
+void Music::Initialize()
 {
     memset(UpDown, 0, sizeof(UpDown));
     memset(Note, 0, sizeof(Note));

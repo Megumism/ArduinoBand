@@ -1,10 +1,10 @@
-#ifndef GetThing_H
-#define GetThing_H
+#ifndef Music_H
+#define Music_H
 #include <arduino.h>
 #include "LiquidCrystal.h"
 #include "keyboard44.h"
 
-class GetThing
+class Music
 {
 private:
 	const int TONE[7] = {0, 2, 4, 5, 7, 9, 11};	 //tone sequence: CDEFGAB
@@ -17,8 +17,8 @@ public:
 	int Dura[100] = {0};	 // duration
 	int RealNote[100] = {0}; // record the note from 1 to 7
 	int pin[100] = {0};
-	//Tone:distance from C3( E is +4 ); Rhythm:BPM; metre:小节拍数; num:the total number of notes; pinX:小节数
-	int Tone = 0, Rhythm = 0, metre = 0, num = 0, pinX = 0;
+	//Tone:distance from C3( E is +4 ); Rhythm:BPM; metre:小节拍数, 默认为4; num:the total number of notes; pinX:小节数
+	int Tone = 0, Rhythm = 0, metre = 4, num = 0, pinX = 0;
 	bool songExisitence = false;//是否有歌
 
 	void getTone(LiquidCrystal lcd, keyboard44 keyboard);

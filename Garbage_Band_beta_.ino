@@ -2,7 +2,7 @@
 
 #include "LiquidCrystal.h"
 #include "keyboard44.h"
-#include "getThing.h"
+#include "Music.h"
 #include "string.h"
 #define C3 261.63
 
@@ -17,7 +17,7 @@ int Buzzer = 2;
 LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 
 //get information
-GetThing getThing;
+Music music;
 
 void setup()
 {
@@ -42,7 +42,7 @@ void loop()
 {
     //显示开始界面，并且让使用者选择：1.制谱 2.游戏
     lcd.begin(16, 2);
-    if (getThing.songExisitence)
+    if (music.songExisitence)
     {
         lcd.print("*:Song  D:Replay");
     }
@@ -62,18 +62,18 @@ void loop()
     //*.song
     if (key == '*')
     {
-        getThing.Initialize();            //everything initialized
-        getThing.getTone(lcd, keyboard);  //sequence: ABCDEFG
-        getThing.getPace(lcd, keyboard);  //get the pace
-        getThing.getMetre(lcd, keyboard);  //get the metre
-        getThing.getMusic(lcd, keyboard); //get the music
+        music.Initialize();            //everything initialized
+        music.getTone(lcd, keyboard);  //sequence: ABCDEFG
+        music.getPace(lcd, keyboard);  //get the pace
+        music.getMetre(lcd, keyboard);  //get the metre
+        music.getMusic(lcd, keyboard); //get the music
 
         //show recording for a while
         lcd.begin(16, 2);
         lcd.print("  Recording...");
         delay(1500);
 
-        music();     //play the music
+        sing();     //play the music
         delay(500); //stop for a while
         score();     //review the score
 
@@ -93,7 +93,7 @@ void loop()
     //D.Replay
     else if (key == 'D')
     {
-        music();     //play the music
+        sing();     //play the music
         delay(500); //stop for a while
                 
         //complimentary: Amazing!|Back to menu..
@@ -105,7 +105,7 @@ void loop()
     }
 }
 
-void music()
+void sing()
 {
     float Frequency, Duration;
     int sum = 0;
@@ -113,32 +113,32 @@ void music()
     lcd.begin(16, 2);
     lcd.setCursor(0, 0);
 
-    for (int i = 0; i < getThing.num; i++)
+    for (int i = 0; i < music.num; i++)
     {
-        if (getThing.UpDown[i] == 1)
+        if (music.UpDown[i] == 1)
             lcd.print('#');
-        if (getThing.UpDown[i] == -1)
+        if (music.UpDown[i] == -1)
             lcd.print('b');
-        lcd.print(getThing.RealNote[i]);
+        lcd.print(music.RealNote[i]);
 
-        sum += getThing.Dura[i];
-        Duration = float(getThing.Dura[i]) / getThing.Rhythm * 60 * 1000;
-        Frequency = C3 * pow(1.059463, getThing.Note[i]);
+        sum += music.Dura[i];
+        Duration = float(music.Dura[i]) / music.Rhythm * 60 * 1000;
+        Frequency = C3 * pow(1.059463, music.Note[i]);
         tone(Buzzer, Frequency, Duration);
-        delay(Duration / float(getThing.Dura[i]));
+        delay(Duration / float(music.Dura[i]));
 
-        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+        for (int j = 0; j <= music.Dura[i] - 2; j++)
         {
             lcd.print('-');
-            delay(Duration / float(getThing.Dura[i]));
+            delay(Duration / float(music.Dura[i]));
         }
         lcd.print(" ");
 
-        if (sum % getThing.metre == 0) //一个小节的末尾
+        if (sum % music.metre == 0) //一个小节的末尾
         {
-            getThing.pinX++;                     //小节数++
-            getThing.pin[getThing.pinX] = i + 1; //记录每一个小节开头音符对应的序号
-            if (sum / getThing.metre == 1)       //第一个小节末尾，直接输出光标下移
+            music.pinX++;                     //小节数++
+            music.pin[music.pinX] = i + 1; //记录每一个小节开头音符对应的序号
+            if (sum / music.metre == 1)       //第一个小节末尾，直接输出光标下移
             {
                 lcd.print('|');
                 lcd.setCursor(0, 1);
@@ -147,10 +147,10 @@ void music()
             {
                 lcd.clear();
                 lcd.begin(16, 2);
-                for (int j = getThing.pin[getThing.pinX - 1]; j <= i; j++)
+                for (int j = music.pin[music.pinX - 1]; j <= i; j++)
                 {
-                    lcd.print(getThing.RealNote[j]);
-                    for (int k = 0; k <= getThing.Dura[j] - 2; k++)
+                    lcd.print(music.RealNote[j]);
+                    for (int k = 0; k <= music.Dura[j] - 2; k++)
                         lcd.print('-');
                     lcd.print(" ");
                 }
@@ -159,7 +159,7 @@ void music()
             }
         }
     }
-    getThing.pin[getThing.num + 1] = getThing.num;
+    music.pin[music.num + 1] = music.num;
 }
 
 void score()
@@ -168,19 +168,19 @@ void score()
     lcd.begin(16, 2);
     key = 0;
 
-    for (int i = 0; i < getThing.pin[1]; i++)
+    for (int i = 0; i < music.pin[1]; i++)
     {
-        lcd.print(getThing.RealNote[i]);
-        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+        lcd.print(music.RealNote[i]);
+        for (int j = 0; j <= music.Dura[i] - 2; j++)
             lcd.print('-');
         lcd.print(' ');
     }
     lcd.print('|');
     lcd.setCursor(0, 1);
-    for (int i = getThing.pin[1]; i < getThing.pin[2]; i++)
+    for (int i = music.pin[1]; i < music.pin[2]; i++)
     {
-        lcd.print(getThing.RealNote[i]);
-        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+        lcd.print(music.RealNote[i]);
+        for (int j = 0; j <= music.Dura[i] - 2; j++)
             lcd.print('-');
         lcd.print(' ');
     }
@@ -197,19 +197,19 @@ void score()
         {
             lcd.clear();
             lcd.setCursor(0, 0);
-            for (int i = getThing.pin[head]; i < getThing.pin[head + 1]; i++)
+            for (int i = music.pin[head]; i < music.pin[head + 1]; i++)
             {
-                lcd.print(getThing.RealNote[i]);
-                for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+                lcd.print(music.RealNote[i]);
+                for (int j = 0; j <= music.Dura[i] - 2; j++)
                     lcd.print('-');
                 lcd.print(' ');
             }
             lcd.print('|');
             lcd.setCursor(0, 1);
-            for (int i = getThing.pin[head + 1]; i < getThing.pin[head + 2]; i++)
+            for (int i = music.pin[head + 1]; i < music.pin[head + 2]; i++)
             {
-                lcd.print(getThing.RealNote[i]);
-                for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+                lcd.print(music.RealNote[i]);
+                for (int j = 0; j <= music.Dura[i] - 2; j++)
                     lcd.print('-');
                 lcd.print(' ');
             }
