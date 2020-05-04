@@ -19,13 +19,28 @@ LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 //get information
 GetThing getThing;
 
+byte smiley[8] = {
+    B00000,
+    B10001,
+    B00000,
+    B00000,
+    B10001,
+    B01110,
+    B00000,
+};
+
 void setup()
 {
     //welcome
     lcd.begin(16, 2); //设置列行值
     lcd.print("   Welcome to");
     lcd.setCursor(0, 1); //光标跳转到下一行
-    lcd.print("  Garbage Band");
+    
+    lcd.print(" ");
+    lcd.write(B10100010);
+    lcd.print("Garbage Band");
+    lcd.write(B10100011);
+
     delay(2000);
 
     pinMode(Buzzer, OUTPUT); //buzzer OUTPUT

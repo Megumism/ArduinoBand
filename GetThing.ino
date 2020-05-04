@@ -198,8 +198,10 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
 
     lcd.begin(16, 2);
     lcd.print("Tone:");
-    lcd.setCursor(1, 1);
-    lcd.print("C");
+    lcd.setCursor(0, 1);
+    lcd.write(B01111111);//←
+    lcd.print(" C ");
+    lcd.write(B01111110);//→
 
     while (key != 'D')
     {
@@ -209,13 +211,13 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
         {
             if (key == '*') // b flat
             {
-                lcd.setCursor(0, 1);
+                lcd.setCursor(1, 1);
                 lcd.print('b');
                 Tone--;
             }
             if (key == '#') // # sharp
             {
-                lcd.setCursor(0, 1);
+                lcd.setCursor(1, 1);
                 lcd.print('#');
                 Tone++;
             }
@@ -223,14 +225,14 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
             {
                 letter++;
                 Toneflag++;
-                lcd.setCursor(1, 1);
+                lcd.setCursor(2, 1);
                 lcd.print(Toneflag);
             }
             if (key == 'C') // Down
             {
                 letter--;
                 Toneflag--;
-                lcd.setCursor(1, 1);
+                lcd.setCursor(2, 1);
                 lcd.print(Toneflag);
             }
         }
