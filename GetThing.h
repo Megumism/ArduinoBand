@@ -23,6 +23,7 @@ public:
 
 	void getTone(LiquidCrystal lcd, keyboard44 keyboard);
 	void getPace(LiquidCrystal lcd, keyboard44 keyboard);
+	void getMetre(LiquidCrystal lcd, keyboard44 keyboard);
 	void getMusic(LiquidCrystal lcd, keyboard44 keyboard);
 	void Initialize();
 };

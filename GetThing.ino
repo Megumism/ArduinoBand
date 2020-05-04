@@ -160,16 +160,19 @@ void GetThing::getPace(LiquidCrystal lcd, keyboard44 keyboard)
             lcd.blink();
         }
     }
+}
 
-    //get Metre: 3/4, 9/8
+void GetThing::getMetre(LiquidCrystal lcd, keyboard44 keyboard)//3/4, 9/8
+{                    
+    char key = 0;
     bool lr = false; // left or right ,false means left, true means right
+    
     lcd.begin(16, 2);
     lcd.print("Metre:");
     lcd.setCursor(1, 1);
     lcd.print('/');
     lcd.setCursor(2 * lr, 1);
     lcd.blink();
-    key = 0;
     while (key != 'D')
     {
         key = keyboard.getKey();

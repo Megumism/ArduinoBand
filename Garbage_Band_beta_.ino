@@ -37,6 +37,7 @@ void setup()
     Serial.begin(9600);
 }
 
+//交互实现
 void loop()
 {
     //显示开始界面，并且让使用者选择：1.制谱 2.游戏
@@ -64,6 +65,7 @@ void loop()
         getThing.Initialize();            //everything initialized
         getThing.getTone(lcd, keyboard);  //sequence: ABCDEFG
         getThing.getPace(lcd, keyboard);  //get the pace
+        getThing.getMetre(lcd, keyboard);  //get the metre
         getThing.getMusic(lcd, keyboard); //get the music
 
         //show recording for a while
@@ -72,7 +74,7 @@ void loop()
         delay(1500);
 
         music();     //play the music
-        delay(1000); //stop for a while
+        delay(500); //stop for a while
         score();     //review the score
 
         //complimentary: Amazing!|Back to menu..
@@ -92,7 +94,7 @@ void loop()
     else if (key == 'D')
     {
         music();     //play the music
-        delay(1000); //stop for a while
+        delay(500); //stop for a while
                 
         //complimentary: Amazing!|Back to menu..
         lcd.begin(16, 2);
