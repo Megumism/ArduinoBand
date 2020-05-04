@@ -59,9 +59,9 @@ void loop()
 
     if (key == '*')
     {
-        getThing.getTone();  //sequence:C D E F G A B!
-        getThing.getPace();  //get the pace
-        getThing.getMusic(); //get the music
+        getThing.getTone(lcd,keyboard);  //sequence:C D E F G A B!
+        getThing.getPace(lcd,keyboard);  //get the pace
+        getThing.getMusic(lcd,keyboard); //get the music
 
         //show recording for a while
         lcd.begin(16, 2);

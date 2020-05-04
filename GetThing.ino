@@ -1,5 +1,5 @@
 #include "GetThing.h"
-void GetThing::getTone()
+void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
 {
     char UDflag = ' ', Toneflag = 'C';     //UDflag:whether use */# or not; Toneflag:A-G
     int letter = 0;                        //0 means C, 1 means D
@@ -50,7 +50,7 @@ void GetThing::getTone()
     Serial.println(Tone);
 }
 
-void GetThing::getPace()
+void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
 {
     //������ģ����ĸ�ʽ��120#����#��β
     lcd.begin(16, 2);
@@ -79,7 +79,7 @@ void GetThing::getPace()
     }
 }
 
-void GetThing::getMusic()
+void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
 {
     //�������ף����������ʽ������+������+0+����������b1203����ʾ��D4(re)����3�ģ�ÿ����һ��������A�س���ȫ�����밴D����¼�룻B��ʾ���ţ�-702��B3(si)��������
     lcd.begin(16, 2);
