@@ -9,7 +9,7 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
     lcd.print("Tone:");
     lcd.setCursor(0, 1);
     lcd.print(" C");
-    key = 0;
+    char key = 0;
     Tone = 0;
 
     while (key != 'D')
@@ -52,12 +52,12 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
 
 void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
 {
+    char key = 0;
     //������ģ����ĸ�ʽ��120#����#��β
     lcd.begin(16, 2);
     lcd.print("Rhythm:");
     lcd.setCursor(0, 1);
     lcd.blink();
-    key = 0;
     Rhythm = 0;
 
     //һֱ��¼���ݣ�ֱ��������ֹ��#
@@ -81,12 +81,12 @@ void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
 
 void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
 {
+    char key = 0;
     //�������ף����������ʽ������+������+0+����������b1203����ʾ��D4(re)����3�ģ�ÿ����һ��������A�س���ȫ�����밴D����¼�룻B��ʾ���ţ�-702��B3(si)��������
     lcd.begin(16, 2);
     lcd.print("Your song:");
     lcd.setCursor(0, 1);
     lcd.blink();
-    key = 0;
     num = 0;
     note = 0;
     Zflag = 0;
@@ -184,5 +184,16 @@ void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
             lcd.setCursor(0, 1);
             lcd.blink();
         }
+    }
+}
+
+void GetThing::Initialize()
+{
+    for (int i = 0; i <= num; i++)
+    {
+        Note[i] = 0;
+        UpDown[i] = 0;
+        Dura[i] = 0;
+        RealNote[i] = 0; //initialize and prepare for next song
     }
 }

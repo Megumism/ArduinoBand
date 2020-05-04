@@ -5,6 +5,7 @@
 
 //define the 4*4 keyboard
 keyboard44 keyboard(11, 10, 9, 8, 7, 6, 5, 4);
+char key; //keyboard input
 
 //pin of buzzer
 int Buzzer = 2;
@@ -14,21 +15,6 @@ LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 
 //get information
 GetThing getThing;
-
-//tone sequence: C, D, E, F, G, A, B
-int TONE[7] = {0, 2, 4, 5, 7, 9, 11};
-
-//data of music
-int UpDown[100] = {0};   // b or #
-int Note[100] = {0};     // record the number of note: 1, 7, 13
-int Dura[100] = {0};     // duration
-int RealNote[100] = {0}; // record the note from 1 to 7
-
-char key; //keyboard input
-
-int Tone, Rhythm, num, note, Bflag, Zflag;
-float Frequency, Duration, xx, sum = 0;
-
 
 void setup()
 {
@@ -90,39 +76,29 @@ void loop()
     {
     }
 
-    Initialize(); //everything initialized
-}
-
-void Initialize()
-{
-    for (int i = 0; i <= num; i++)
-    {
-        Note[i] = 0;
-        UpDown[i] = 0;
-        Dura[i] = 0;
-        RealNote[i] = 0; //initialize and prepare for next song
-    }
+    getThing.Initialize(); //nitialized
 }
 
 void musicVisualize()
 {
-    for (int i = 0; i < num; i++)
+	float Frequency, Duration, xx, sum = 0;
+    for (int i = 0; i < getThing.num; i++)
     {
         //���������
-        if (UpDown[i] == 1)
+        if (getThing.UpDown[i] == 1)
             lcd.print('#');
-        if (UpDown[i] == -1)
+        if (getThing.UpDown[i] == -1)
             lcd.print('b');
 
         //����������
-        xx = Dura[i]; //��������ת��
-        sum += Dura[i];
-        Duration = xx / Rhythm * 60 * 1000;
-        Frequency = C3 * pow(1.059463, Note[i]);
+        xx = getThing.Dura[i]; //��������ת��
+        sum += getThing.Dura[i];
+        Duration = xx / getThing.Rhythm * 60 * 1000;
+        Frequency = C3 * pow(1.059463, getThing.Note[i]);
         tone(Buzzer, Frequency, Duration);
 
         //�������1-7
-        lcd.print(RealNote[i]);
+        lcd.print(getThing.RealNote[i]);
         if (sum >= 4)
         {
             lcd.scrollDisplayLeft();
@@ -130,7 +106,7 @@ void musicVisualize()
 
         //�������
         delay(Duration / xx);
-        for (int j = 0; j <= Dura[i] - 2; j++)
+        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
         {
             lcd.print('-');
             delay(Duration / xx);
