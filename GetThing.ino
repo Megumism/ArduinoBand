@@ -3,7 +3,7 @@
 void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
 {
     int note = 0, beat = 0, lr = 0;
-    int key = 0;
+    char key = 0;
 
     lcd.begin(16, 2);
     lcd.print("Your song:");
@@ -134,8 +134,7 @@ void GetThing::getMusic(LiquidCrystal lcd,keyboard44 keyboard)
 
 void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
 {
-
-    int key = 0;
+    char key = 0;
     //get BPM: beat per minute
     lcd.begin(16, 2);
     lcd.print("BPM:");
@@ -195,7 +194,7 @@ void GetThing::getTone(LiquidCrystal lcd,keyboard44 keyboard)
 {
     char Toneflag = 'C'; // Toneflag:A-G
     int letter = 0;      // 0 means C, 1 means D
-    int key = 0;
+    char key = 0;
 
     lcd.begin(16, 2);
     lcd.print("Tone:");

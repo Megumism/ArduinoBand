@@ -14,7 +14,7 @@ char key; //keyboard input
 int Buzzer = 2;
 
 // LCD pin
-LiquidCrystal lcd(A0, A1, A2, A3, A4, A5); 
+LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 
 //get information
 GetThing getThing;
@@ -50,18 +50,19 @@ void loop()
     //*.song
     if (key == '*')
     {
-        getThing.getTone(lcd,keyboard);  //sequence: ABCDEFG
-        getThing.getPace(lcd,keyboard);  //get the pace
-        getThing.getMusic(lcd,keyboard); //get the music
+        getThing.Initialize();            //everything initialized
+        getThing.getTone(lcd, keyboard);  //sequence: ABCDEFG
+        getThing.getPace(lcd, keyboard);  //get the pace
+        getThing.getMusic(lcd, keyboard); //get the music
 
         //show recording for a while
         lcd.begin(16, 2);
         lcd.print("  Recording...");
         delay(2000);
 
-        music();         //play the music
-        delay(1000);     //stop for a while
-        score(); //review the score
+        music();     //play the music
+        delay(1000); //stop for a while
+        score();     //review the score
 
         //complimentaryAmazing!|Back to menu..
         lcd.begin(16, 2);
@@ -75,12 +76,10 @@ void loop()
     else if (key == '#')
     {
     }
-
-    getThing.Initialize(); //everything initialized
 }
 
-void play1Note(){
-    
+void play1Note()
+{
 }
 
 void music()
@@ -97,27 +96,28 @@ void music()
             lcd.print('#');
         if (getThing.UpDown[i] == -1)
             lcd.print('b');
-
         lcd.print(getThing.RealNote[i]);
 
         sum += getThing.Dura[i];
         Duration = getThing.Dura[i] / getThing.Rhythm * 60.0 * 1000.0;
         Frequency = C3 * pow(1.059463, getThing.Note[i]);
         tone(Buzzer, Frequency, Duration);
-        delay(Duration / float(getThing.Dura[i]));
 
+        delay(1 / getThing.Rhythm * 60.0 * 1000.0);
+        //原来是：delay(Duration / float(getThing.Dura[i]));
+        //但是，Duration = getThing.Dura[i] / getThing.Rhythm * 60.0 * 1000.0
         for (int j = 0; j <= getThing.Dura[i] - 2; j++)
         {
             lcd.print('-');
-            delay(Duration / float(getThing.Dura[i]));
+            delay(1 / getThing.Rhythm * 60.0 * 1000.0);
         }
         lcd.print(" ");
 
         if (sum % getThing.metre == 0) //一个小节的末尾
         {
-            getThing.pinX++;               //小节数++
-            getThing.pin[getThing.pinX] = i + 1;    //记录每一个小节开头音符对应的序号
-            if (sum / getThing.metre == 1) //第一个小节末尾，直接输出光标下移
+            getThing.pinX++;                     //小节数++
+            getThing.pin[getThing.pinX] = i + 1; //记录每一个小节开头音符对应的序号
+            if (sum / getThing.metre == 1)       //第一个小节末尾，直接输出光标下移
             {
                 lcd.print('|');
                 lcd.setCursor(0, 1);
