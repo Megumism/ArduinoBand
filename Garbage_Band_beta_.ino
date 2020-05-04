@@ -32,6 +32,8 @@ void setup()
     Serial.begin(9600);
 }
 
+bool songExisitence = false;
+
 void loop()
 {
 
@@ -80,7 +82,7 @@ void loop()
 
 void music()
 {
-    float Frequency, Duration,xx;
+    float Frequency, Duration;
     int sum = 0;
 
     lcd.begin(16, 2);
@@ -94,17 +96,16 @@ void music()
             lcd.print('b');
         lcd.print(getThing.RealNote[i]);
 
-        xx = getThing.Dura[i]; //change the type from int to float
         sum += getThing.Dura[i];
-        Duration = xx / getThing.Rhythm * 60 * 1000;
+        Duration = float(getThing.Dura[i]) / getThing.Rhythm * 60 * 1000;
         Frequency = C3 * pow(1.059463, getThing.Note[i]);
         tone(Buzzer, Frequency, Duration);
-        delay(Duration / xx);
+        delay(Duration / float(getThing.Dura[i]));
 
         for (int j = 0; j <= getThing.Dura[i] - 2; j++)
         {
             lcd.print('-');
-            delay(Duration / xx);
+            delay(Duration / float(getThing.Dura[i]));
         }
         lcd.print(" ");
 
