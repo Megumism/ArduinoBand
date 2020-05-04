@@ -1,8 +1,9 @@
-#ifndef getThing_H
-#define getThing_H
+#ifndef GetThing_H
+#define GetThing_H
 #include<arduino.h>
+#include "LiquidCrystal.h"
 
-class getThing
+class GetThing
 {
 public:
 	void getTone();
