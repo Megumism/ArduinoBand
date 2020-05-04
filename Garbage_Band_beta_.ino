@@ -2,39 +2,32 @@
 
 #include "LiquidCrystal.h"
 #include "keyboard44.h"
-#include "Display.h"
 #include "getThing.h"
 #include "string.h"
+#define C3 261.63
 
 //define the 4*4 keyboard
 keyboard44 keyboard(11, 10, 9, 8, 7, 6, 5, 4);
-
-//LCD display
-Display Display;
-
-//get information
-getThing getThing;
+char key; //keyboard input
 
 //pin of buzzer
 int Buzzer = 2;
 
-//data of music
-int UpDown[100] = {0};   // b or #
-int Note[100] = {0};     // record the number of note: 1, 7, 13
-int Dura[100] = {0};     // duration
-int RealNote[100] = {0}; // record the note from 1 to 7
-int pin[100] = {0};
+// LCD pin
+LiquidCrystal lcd(A0, A1, A2, A3, A4, A5); 
 
-char key; //keyboard input
-
-int Tone = 0, Rhythm = 0, metre = 0, num = 0, pinX = 0;
-//Tone:distance from C3( E is +4 ); Rhythm:BPM; metre:小节拍数; num:the total number of notes; pinX:小节数
-
-LiquidCrystal lcd(A0, A1, A2, A3, A4, A5); // LCD pin
+//get information
+GetThing getThing;
 
 void setup()
 {
-    Display.welcome();       //welcome
+    //welcome
+    lcd.begin(16, 2); //设置列行值
+    lcd.print("   Welcome to");
+    lcd.setCursor(0, 1); //光标跳转到下一行
+    lcd.print("  Garbage Band");
+    delay(2000);
+
     pinMode(Buzzer, OUTPUT); //buzzer OUTPUT
     Serial.begin(9600);
 }
@@ -57,19 +50,25 @@ void loop()
     //*.song
     if (key == '*')
     {
-        getThing.getTone();  //sequence: ABCDEFG
-        getThing.getPace();  //get the pace
-        getThing.getMusic(); //get the music
+        getThing.getTone(lcd,keyboard);  //sequence: ABCDEFG
+        getThing.getPace(lcd,keyboard);  //get the pace
+        getThing.getMusic(lcd,keyboard); //get the music
 
         //show recording for a while
         lcd.begin(16, 2);
         lcd.print("  Recording...");
         delay(2000);
 
-        Display.music();   //play the music
-        delay(1000);       //stop for a while
-        Display.score();   //review the score
-        Display.Amazing(); //complimentary
+        music();         //play the music
+        delay(1000);     //stop for a while
+        score(); //review the score
+
+        //complimentaryAmazing!|Back to menu..
+        lcd.begin(16, 2);
+        lcd.print("    Amazing!");
+        lcd.setCursor(0, 1);
+        lcd.print(" Back to menu..");
+        delay(2000);
     }
 
     //#.game
@@ -77,18 +76,124 @@ void loop()
     {
     }
 
-    Initialize(); //everything initialized
+    getThing.Initialize(); //everything initialized
 }
 
-void Initialize()
+void play1Note(){
+    
+}
+
+void music()
 {
-    memset(UpDown, 0, sizeof(UpDown));
-    memset(Note, 0, sizeof(Note));
-    memset(Dura, 0, sizeof(Dura));
-    memset(RealNote, 0, sizeof(RealNote));
-    Tone = 0;
-    Rhythm = 0;
-    metre = 0;
-    num = 0;
-    pinX = 0;
+    float Frequency, Duration, xx;
+    int sum = 0;
+
+    lcd.begin(16, 2);
+    lcd.setCursor(0, 0);
+
+    for (int i = 0; i < getThing.num; i++)
+    {
+        if (getThing.UpDown[i] == 1)
+            lcd.print('#');
+        if (getThing.UpDown[i] == -1)
+            lcd.print('b');
+
+        lcd.print(getThing.RealNote[i]);
+
+        xx = getThing.Dura[i]; //change the type from int to float
+        sum += getThing.Dura[i];
+        Duration = xx / getThing.Rhythm * 60 * 1000;
+        Frequency = C3 * pow(1.059463, getThing.Note[i]);
+        tone(Buzzer, Frequency, Duration);
+        delay(Duration / xx);
+
+        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+        {
+            lcd.print('-');
+            delay(Duration / xx);
+        }
+        lcd.print(" ");
+
+        if (sum % getThing.metre == 0) //一个小节的末尾
+        {
+            getThing.pinX++;               //小节数++
+            getThing.pin[getThing.pinX] = i + 1;    //记录每一个小节开头音符对应的序号
+            if (sum / getThing.metre == 1) //第一个小节末尾，直接输出光标下移
+            {
+                lcd.print('|');
+                lcd.setCursor(0, 1);
+            }
+            else //其余小节末尾，作翻页操作
+            {
+                lcd.clear();
+                lcd.begin(16, 2);
+                for (int j = getThing.pin[getThing.pinX - 1]; j <= i; j++)
+                {
+                    lcd.print(getThing.RealNote[j]);
+                    for (int k = 0; k <= getThing.Dura[j] - 2; k++)
+                        lcd.print('-');
+                    lcd.print(" ");
+                }
+                lcd.print('|');
+                lcd.setCursor(0, 1);
+            }
+        }
+    }
+    getThing.pin[getThing.num + 1] = getThing.num;
+}
+
+void score()
+{
+    int head = 0;
+    lcd.begin(16, 2);
+    key = 0;
+
+    for (int i = 0; i < getThing.pin[1]; i++)
+    {
+        lcd.print(getThing.RealNote[i]);
+        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+            lcd.print('-');
+        lcd.print(' ');
+    }
+    lcd.print('|');
+    lcd.setCursor(0, 1);
+    for (int i = getThing.pin[1]; i < getThing.pin[2]; i++)
+    {
+        lcd.print(getThing.RealNote[i]);
+        for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+            lcd.print('-');
+        lcd.print(' ');
+    }
+    lcd.print('|');
+
+    while (key != 'D')
+    {
+        key = keyboard.getKey();
+        if (key == 'B')
+            head--;
+        if (key == 'C')
+            head++;
+        if (key != 0) //prevent non-stop refresh
+        {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            for (int i = getThing.pin[head]; i < getThing.pin[head + 1]; i++)
+            {
+                lcd.print(getThing.RealNote[i]);
+                for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+                    lcd.print('-');
+                lcd.print(' ');
+            }
+            lcd.print('|');
+            lcd.setCursor(0, 1);
+            for (int i = getThing.pin[head + 1]; i < getThing.pin[head + 2]; i++)
+            {
+                lcd.print(getThing.RealNote[i]);
+                for (int j = 0; j <= getThing.Dura[i] - 2; j++)
+                    lcd.print('-');
+                lcd.print(' ');
+            }
+            lcd.print('|');
+        }
+    }
 }
