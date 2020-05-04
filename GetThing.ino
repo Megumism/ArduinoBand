@@ -161,7 +161,7 @@ void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
     }
 
     //get Metre: 3/4, 9/8
-    int lr = 0; // left or right ,0 means left, 1 means right
+    bool lr = false; // left or right ,false means left, true means right
     lcd.begin(16, 2);
     lcd.print("Metre:");
     lcd.setCursor(1, 1);
@@ -174,10 +174,10 @@ void GetThing::getPace(LiquidCrystal lcd,keyboard44 keyboard)
         key = keyboard.getKey();
         if ((key != 0) && (key != 'D'))
         {
-            if (key == 'B')
-                lr--;
-            if (key == 'C')
-                lr++;
+            if (key == 'B' && lr)
+                lr = false;
+            if (key == 'C' && !lr)
+                lr = true;
             if ((key >= '1') && (key <= '9'))
             {
                 lcd.print(key);
