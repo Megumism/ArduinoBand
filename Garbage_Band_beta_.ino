@@ -78,13 +78,9 @@ void loop()
     }
 }
 
-void play1Note()
-{
-}
-
 void music()
 {
-    float Frequency, Duration;
+    float Frequency, Duration,xx;
     int sum = 0;
 
     lcd.begin(16, 2);
@@ -98,18 +94,17 @@ void music()
             lcd.print('b');
         lcd.print(getThing.RealNote[i]);
 
+        xx = getThing.Dura[i]; //change the type from int to float
         sum += getThing.Dura[i];
-        Duration = getThing.Dura[i] / getThing.Rhythm * 60.0 * 1000.0;
+        Duration = xx / getThing.Rhythm * 60 * 1000;
         Frequency = C3 * pow(1.059463, getThing.Note[i]);
         tone(Buzzer, Frequency, Duration);
+        delay(Duration / xx);
 
-        delay(1 / getThing.Rhythm * 60.0 * 1000.0);
-        //原来是：delay(Duration / float(getThing.Dura[i]));
-        //但是，Duration = getThing.Dura[i] / getThing.Rhythm * 60.0 * 1000.0
         for (int j = 0; j <= getThing.Dura[i] - 2; j++)
         {
             lcd.print('-');
-            delay(1 / getThing.Rhythm * 60.0 * 1000.0);
+            delay(Duration / xx);
         }
         lcd.print(" ");
 
