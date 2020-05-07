@@ -8,7 +8,6 @@ class Score
 {
 private:
     char cursorX = 0, cursorY = 0;  //记录光标位置
-    bool cursorAvailable[16] = {0}; //防止光标越界
 
 public:
     int note[50] = {0}; //例：-171

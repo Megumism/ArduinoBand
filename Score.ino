@@ -16,33 +16,37 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     while (key != 'D' && key != 'C')
     {
         key = keyboard.getKey();
-        if (key == '#') //升
+        if (charnum)//先有音符才能有操作符
         {
-            if (!buffer[0])
+            if (key == '#') //升
             {
-                charnum++;
-                cursorX++;
+                if (!buffer[0])
+                {
+                    charnum++;
+                    cursorX++;
+                }
+                buffer[0] = key;
             }
-            buffer[0] = key;
-        }
-        if (key == '*') //降
-        {
-            if (!buffer[0])
+            if (key == '*') //降
             {
-                charnum++;
-                cursorX++;
+                if (!buffer[0])
+                {
+                    charnum++;
+                    cursorX++;
+                }
+                buffer[0] = 'b';
             }
-            buffer[0] = 'b';
-        }
-        if (key == '9') //低度
-        {
-            if (!buffer[1])
+            if (key == '9') //低度
             {
-                charnum++;
-                cursorX++;
+                if (!buffer[1])
+                {
+                    charnum++;
+                    cursorX++;
+                }
+                buffer[1] = '-';
             }
-            buffer[1] = '-';
         }
+
         if (key == 'A' && cursorX > cursorX0)
         {
             cursorX = cursorX0;
@@ -61,7 +65,7 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
                 charnum++;
             }
         }
-        if (key == 'D' || key == 'C')
+        if ((key == 'D' || key == 'C'))
         {
             break;
         }
@@ -233,4 +237,5 @@ void Score::Initialize()
     int note[50] = {0};
     char pace[50] = {0};
     char length = 0;
+    char cursorX = 0, cursorY = 0;
 }
