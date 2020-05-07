@@ -78,19 +78,21 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
                 }
             }
 
-            Serial.print("(");
-            Serial.print(int(cursorX));
-            Serial.print(" ");
-            Serial.print(int(cursorY));
-            Serial.print(") ");
-            Serial.print(int(buffer[0]));
-            Serial.print(int(buffer[1]));
-            Serial.print(int(buffer[2]));
-            Serial.println(int(buffer[3]));
+            // Serial.print("(");
+            // Serial.print(int(cursorX));
+            // Serial.print(" ");
+            // Serial.print(int(cursorY));
+            // Serial.print(") ");
+            // Serial.print(int(buffer[0]));
+            // Serial.print(int(buffer[1]));
+            // Serial.print(int(buffer[2]));
+            // Serial.println(int(buffer[3]));
+            
             key = 0;
             lcd.setCursor(cursorX, cursorY);
         }
     }
+    cursorX++;
     if (key == '-')
     {
         pace[num - 1]++;
