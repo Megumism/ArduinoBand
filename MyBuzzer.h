@@ -27,10 +27,14 @@ private:
     uint8_t buzzerPin;
 
 public:
-    int ToneX(int main, int SoundIN); //主调映射函数
-    void Sing(int Main, int Song[], char beat[], int length);//唱一段
-    void Sing(int Main, int Note, char beat);//唱一个
-    Buzzer(uint8_t pin);//Beeee~
+    //主调映射函数
+    int ToneX(int main, int SoundIN);
+    //唱一段
+    void Sing(int Main, int Song[], char beat[], int length);
+    //唱一个
+    void Sing(int Main, int Note, char beat);
+    //Beeee~
+    Buzzer(uint8_t pin);
 };
 
 #endif

@@ -107,17 +107,17 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
                 }
             }
 
-            Serial.print("(");
-            Serial.print(int(cursorX));
-            Serial.print(",");
-            Serial.print(int(cursorY));
-            Serial.print(") ");
-            Serial.print(int(buffer[0]));
-            Serial.print(int(buffer[1]));
-            Serial.print(int(buffer[2]));
-            Serial.print(int(buffer[3]));
-            Serial.print(" ");
-            Serial.println(int(charnum));
+            // Serial.print("(");
+            // Serial.print(int(cursorX));
+            // Serial.print(",");
+            // Serial.print(int(cursorY));
+            // Serial.print(") ");
+            // Serial.print(int(buffer[0]));
+            // Serial.print(int(buffer[1]));
+            // Serial.print(int(buffer[2]));
+            // Serial.print(int(buffer[3]));
+            // Serial.print(" ");
+            // Serial.println(int(charnum));
 
             key = 0;
             lcd.setCursor(cursorX, cursorY);
@@ -126,7 +126,7 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     cursorX++;//空一格
     if (key == 'D' && !charnum)
     {
-        Serial.println("exit");
+        Serial.println("EXIT (from writeNote)");
         return 'D';
     }
     if (key == '8')

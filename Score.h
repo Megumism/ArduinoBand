@@ -13,7 +13,8 @@ private:
 public:
     int note[50]={0};//例：-171
     char pace[50]={0};
-    char writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num);//返回0表示休止，返回-表示延音，返回1表示正常音符
+    //返回0表示休止，返回-表示延音，返回1表示正常音符
+    char writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num);
 };
 
 #endif
