@@ -23,7 +23,7 @@ enum TONE
 };
 
 int ToneX(enum TONE main, int SoundIN);
-void Sing(enum TONE Main, float Song[], int length, int beat);
+void Sing(enum TONE Main, int Song[], char beat[], int length, int buzzer);
 
 //define the 4*4 keyboard
 keyboard44 keyboard(11, 10, 9, 8, 7, 6, 5, 4);
@@ -45,19 +45,32 @@ void setup()
     lcd.begin(16, 2);
     Serial.begin(9600);
     pinMode(buzzer, OUTPUT);
+    tone(buzzer, 440);
+    delay(50);
+    noTone(buzzer);
 }
 
 //交互实现
 void loop()
 {
-    //显示开始界面，并且让使用者选择：1.制谱 2.游戏
-    score.writeNote(lcd, keyboard, 0);
-    // for (char i = 0; i < 50; i++)
-    // {
-    //     char temp;
-    //     temp = (score.writeNote(lcd, keyboard, i));
-    //     if(temp = '-') i--;
-    // }
+    int i;
+    for (i = 0; i < 50; i++)
+    {
+        char temp;
+        temp = score.writeNote(lcd, keyboard, i);
+        if (temp == '-')
+            i--;
+        if (temp == 'D')
+            break;
+        Serial.print("score.note[");
+        Serial.print(i);
+        Serial.print("]=");
+        Serial.println(score.note[i]);
+        tone(buzzer, ToneX(C, score.note[i]));
+        delay(500);
+        noTone(buzzer);
+    }
+    Sing(C, score.note, score.pace, i, buzzer);
 }
 
 int ToneX(enum TONE main, int SoundIN) //主调映射函数
@@ -78,9 +91,9 @@ int ToneX(enum TONE main, int SoundIN) //主调映射函数
         Height = -(((-SoundIN) / 100) + 1);
         UpDown = (-SoundIN % 10) - 1;
     }
-    Serial.println(int(Tone));
-    Serial.println(int(Height));
-    Serial.println(int(UpDown));
+    // Serial.println(int(Tone));
+    // Serial.println(int(Height));
+    // Serial.println(int(UpDown));
     if (Tone == 1)
         Tone = 0;
     else if (Tone == 2)
@@ -96,27 +109,30 @@ int ToneX(enum TONE main, int SoundIN) //主调映射函数
     else if (Tone == 7)
         Tone = 11;
     SoundOUT = main + Tone + Height * 12 + UpDown;
-    Serial.println(SoundOUT);
+    // Serial.println(SoundOUT);
     return int(pow(2, SoundOUT / 12.0) * C3 + 0.5); //这里加0.5实现四舍五入
 }
 
-void Sing(enum TONE Main, float Song[], int length, int beat)
+void Sing(enum TONE Main, int Song[], char beat[], int length, int buzzer)
 {
     int sing;
-    bool up;
     for (int i = 0; i < length; i++)
     {
+        Serial.print("Song[");
+        Serial.print(i);
+        Serial.print("]=");
+        Serial.println(Song[i]);
+        Serial.print("beat[");
+        Serial.print(i);
+        Serial.print("]=");
+        Serial.println(int(beat[i]));
         if (Song[i] != 0)
         {
-            if (int(Song[i] * 2) % 2)
-                up = true;
-            else
-                up = false;
-            sing = Song[i];
-            tone(buzzer, ToneX(Main, sing));
+            tone(buzzer, ToneX(Main, Song[i]));
         }
         else
             noTone(buzzer);
-        delay(beat);
+        delay(int(beat[i]) * 500); //500要改掉的
     }
+    noTone(buzzer);
 }

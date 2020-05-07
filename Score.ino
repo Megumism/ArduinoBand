@@ -119,6 +119,11 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
         }
     }
     cursorX++;
+    if (key == 'D' && !charnum)
+    {
+        Serial.println("exit");
+        return 'D';
+    }
     if (key == '8')
     {
         pace[num - 1]++;
@@ -142,6 +147,6 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
         note[num] += 0;
     if (buffer[1] == '-')
         note[num] = 0 - note[num];
-    Serial.println(note[num]);
+    pace[num] = 1;
     return '1';
 }
