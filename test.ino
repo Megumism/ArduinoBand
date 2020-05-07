@@ -4,6 +4,7 @@
 #include "keyboard44.h"
 #include "Music.h"
 #include "Score.h"
+#define C3 261.63
 
 enum TONE
 {
@@ -20,6 +21,9 @@ enum TONE
     UA,
     B
 };
+
+int ToneX(enum TONE main, int SoundIN);
+void Sing(enum TONE Main, float Song[], int length, int beat);
 
 //define the 4*4 keyboard
 keyboard44 keyboard(11, 10, 9, 8, 7, 6, 5, 4);
@@ -38,15 +42,15 @@ Score score;
 void setup()
 {
     //welcome
+    lcd.begin(16, 2);
     Serial.begin(9600);
-    pinMode(buzzer,OUTPUT);
+    pinMode(buzzer, OUTPUT);
 }
 
 //交互实现
 void loop()
 {
     //显示开始界面，并且让使用者选择：1.制谱 2.游戏
-    lcd.begin(16, 2);
     score.writeNote(lcd, keyboard, 0);
     // for (char i = 0; i < 50; i++)
     // {
@@ -56,40 +60,44 @@ void loop()
     // }
 }
 
-int ToneX(enum TONE main, int SoundIN, bool up) //主调映射函数
+int ToneX(enum TONE main, int SoundIN) //主调映射函数
 {
-    int Sound2Tone;
-    int Sound2Height;
+    char Tone;
+    char Height;
+    char UpDown;
     int SoundOUT;
     if (SoundIN >= 0)
     {
-        Sound2Tone = SoundIN % 10;
-        Sound2Height = SoundIN / 10;
+        Tone = SoundIN % 100 / 10;
+        Height = SoundIN / 100;
+        UpDown = SoundIN % 10 - 1;
     }
     else
     {
-        Sound2Tone = (-SoundIN) % 10;
-        Sound2Height = -(((-SoundIN) / 10) + 1);
-        // Serial.println(Sound2Tone);
-        // Serial.println(Sound2Height);
+        Tone = (-SoundIN) % 100 / 10;
+        Height = -(((-SoundIN) / 100) + 1);
+        UpDown = (-SoundIN % 10) - 1;
     }
-    if (Sound2Tone == 1)
-        Sound2Tone = 0;
-    else if (Sound2Tone == 2)
-        Sound2Tone = 2;
-    else if (Sound2Tone == 3)
-        Sound2Tone = 4;
-    else if (Sound2Tone == 4)
-        Sound2Tone = 5;
-    else if (Sound2Tone == 5)
-        Sound2Tone = 7;
-    else if (Sound2Tone == 6)
-        Sound2Tone = 9;
-    else if (Sound2Tone == 7)
-        Sound2Tone = 11;
-    SoundOUT = main - A + up + Sound2Tone + Sound2Height * 12;
-    // Serial.println(SoundOUT);
-    return int(pow(2, SoundOUT / 12.0) * 440.0 + 0.5); //这里加0.5实现四舍五入
+    Serial.println(int(Tone));
+    Serial.println(int(Height));
+    Serial.println(int(UpDown));
+    if (Tone == 1)
+        Tone = 0;
+    else if (Tone == 2)
+        Tone = 2;
+    else if (Tone == 3)
+        Tone = 4;
+    else if (Tone == 4)
+        Tone = 5;
+    else if (Tone == 5)
+        Tone = 7;
+    else if (Tone == 6)
+        Tone = 9;
+    else if (Tone == 7)
+        Tone = 11;
+    SoundOUT = main + Tone + Height * 12 + UpDown;
+    Serial.println(SoundOUT);
+    return int(pow(2, SoundOUT / 12.0) * C3 + 0.5); //这里加0.5实现四舍五入
 }
 
 void Sing(enum TONE Main, float Song[], int length, int beat)
@@ -105,7 +113,7 @@ void Sing(enum TONE Main, float Song[], int length, int beat)
             else
                 up = false;
             sing = Song[i];
-            tone(buzzer, ToneX(Main, sing, up));
+            tone(buzzer, ToneX(Main, sing));
         }
         else
             noTone(buzzer);
