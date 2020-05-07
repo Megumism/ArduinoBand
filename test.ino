@@ -62,6 +62,8 @@ void loop()
             i--;
         if (temp == 'D')
             break;
+        if (temp == '0')
+            continue;
         Serial.print("score.note[");
         Serial.print(i);
         Serial.print("]=");
@@ -108,9 +110,8 @@ int ToneX(enum TONE main, int SoundIN) //主调映射函数
         Tone = 9;
     else if (Tone == 7)
         Tone = 11;
-    SoundOUT = main + Tone + Height * 12 + UpDown;
     // Serial.println(SoundOUT);
-    return int(pow(2, SoundOUT / 12.0) * C3 + 0.5); //这里加0.5实现四舍五入
+    return int(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 + 0.5); //这里加0.5实现四舍五入
 }
 
 void Sing(enum TONE Main, int Song[], char beat[], int length, int buzzer)

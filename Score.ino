@@ -4,7 +4,12 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
 {
     char key = 0;
     char buffer[4] = {0};
-    char charnum = 0;                            //记录buffer中的有效字符数
+    char charnum = 0;  //记录buffer中的有效字符数
+    if (cursorX >= 15) //换行
+    {
+        cursorY = 1;
+        cursorX = 0;
+    }
     char cursorX0 = cursorX, cursorY0 = cursorY; //记录初始位置
     lcd.setCursor(cursorX, cursorY);
     lcd.blink();
