@@ -1,34 +1,38 @@
 #include "MyBuzzer.h"
 
-void Buzzer::Sing(int Main, int Song[], char beat[], int length)
+void Buzzer::Sing(Score score)
 {
-    int sing;
-    for (int i = 0; i < length; i++)
+    Serial.print("length=");
+    Serial.println(int(score.length));
+    for (int i = 0; i < score.length; i++)
     {
-        Serial.print("Song[");
+        Serial.print("note[");
         Serial.print(i);
         Serial.print("]=");
-        Serial.println(Song[i]);
+        Serial.println(score.note[i]);
         Serial.print("beat[");
         Serial.print(i);
         Serial.print("]=");
-        Serial.println(int(beat[i]));
+        Serial.println(int(score.pace[i]));
 
-        if (Song[i] != 0)
+        if (score.note[i] != 0)
         {
-            tone(buzzerPin, ToneX(Main, Song[i]));
+            tone(buzzerPin, ToneX(score.Tone, score.note[i]));
+            Serial.print("Buzzer Singing");
         }
-        else
-            noTone(buzzerPin);
-        delay(int(beat[i]) * 500); //500要改掉的
+        delay(int(score.pace[i]) * 500); //500要改掉的
     }
     noTone(buzzerPin);
+    Serial.print("Buzzer Stoped");
 }
 
 void Buzzer::Sing(int Main, int Note, char beat)
 {
-    tone(buzzerPin, ToneX(C, Note), beat*500);
+    tone(buzzerPin, ToneX(0, Note));
+    Serial.print("Buzzer Singing");
+    delay(int(beat) * 500);
     noTone(buzzerPin);
+    Serial.print("Buzzer Stoped");
 }
 
 int Buzzer::ToneX(int main, int SoundIN)
@@ -74,7 +78,11 @@ Buzzer::Buzzer(uint8_t pin)
 {
     buzzerPin = pin;
     pinMode(pin, OUTPUT);
-    tone(pin, 440);
+}
+
+void Buzzer::test()
+{
+    tone(buzzerPin, 440);
     delay(50);
-    noTone(pin);
+    noTone(buzzerPin);
 }

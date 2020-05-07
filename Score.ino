@@ -107,23 +107,23 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
                 }
             }
 
-            // Serial.print("(");
-            // Serial.print(int(cursorX));
-            // Serial.print(",");
-            // Serial.print(int(cursorY));
-            // Serial.print(") ");
-            // Serial.print(int(buffer[0]));
-            // Serial.print(int(buffer[1]));
-            // Serial.print(int(buffer[2]));
-            // Serial.print(int(buffer[3]));
-            // Serial.print(" ");
-            // Serial.println(int(charnum));
+            Serial.print("(");
+            Serial.print(int(cursorX));
+            Serial.print(",");
+            Serial.print(int(cursorY));
+            Serial.print(") ");
+            Serial.print(int(buffer[0]));
+            Serial.print(int(buffer[1]));
+            Serial.print(int(buffer[2]));
+            Serial.print(int(buffer[3]));
+            Serial.print(" ");
+            Serial.println(int(charnum));
 
             key = 0;
             lcd.setCursor(cursorX, cursorY);
         }
     }
-    cursorX++;//空一格
+    cursorX++; //空一格
     if (key == 'D' && !charnum)
     {
         Serial.println("EXIT (from writeNote)");
@@ -138,8 +138,10 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     {
         note[num] = 0;
         pace[num] = 1;
+        length++;
         return '0';
     }
+    //只输-有bug！
     if (buffer[3])
         note[num] += 100 * (buffer[2] - '0') + 10 * (buffer[3] - '0');
     else
@@ -153,5 +155,82 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     if (buffer[1] == '-')
         note[num] = 0 - note[num];
     pace[num] = 1;
+    length++;
     return '1';
+}
+
+void Score::getTone(LiquidCrystal lcd, keyboard44 keyboard)
+{
+    lcd.begin(16, 2);
+    lcd.print("Tone:");
+    lcd.setCursor(0, 1);
+    lcd.write(B01111111); //←
+    lcd.setCursor(4, 1);
+    lcd.write(B01111110); //→
+    int key = 0;
+    while (key != 'D')
+    {
+        key = 0;
+        key = keyboard.getKey();
+        lcd.setCursor(1, 1);
+        switch (Tone)
+        {
+        case 0:
+            lcd.print(" C ");
+            break;
+        case 1:
+            lcd.print("#C ");
+            break;
+        case 2:
+            lcd.print(" D ");
+            break;
+        case 3:
+            lcd.print("#D ");
+            break;
+        case 4:
+            lcd.print(" E ");
+            break;
+        case 5:
+            lcd.print(" F ");
+            break;
+        case 6:
+            lcd.print("#F ");
+            break;
+        case 7:
+            lcd.print(" G ");
+            break;
+        case 8:
+            lcd.print("#G ");
+            break;
+        case 9:
+            lcd.print(" A ");
+            break;
+        case 10:
+            lcd.print("#A ");
+            break;
+        case 11:
+            lcd.print(" B ");
+            break;
+        default:
+            break;
+        }
+        if (key == 'B')
+        {
+            Tone = (Tone + 11) % 12;
+        }
+        if (key == 'C')
+        {
+            Tone = (Tone + 1) % 12;
+        }
+    }
+    Serial.print("EXIT (form getTone) Tone=");
+    Serial.println(Tone);
+    lcd.begin(16, 2);
+}
+
+void Score::Initialize()
+{
+    int note[50] = {0};
+    char pace[50] = {0};
+    char length = 0;
 }
