@@ -123,7 +123,7 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
             lcd.setCursor(cursorX, cursorY);
         }
     }
-    cursorX++;
+    cursorX++;//空一格
     if (key == 'D' && !charnum)
     {
         Serial.println("exit");
