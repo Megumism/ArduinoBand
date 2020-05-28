@@ -26,9 +26,9 @@ void Buzzer::Sing(Score score)
     Serial.println("Buzzer Stop");
 }
 
-void Buzzer::Sing(int Main, int Note, int BPM)
+void Buzzer::Sing(int main, int Note, int BPM)
 {
-    tone(buzzerPin, ToneX(0, Note)); //要改
+    tone(buzzerPin, ToneX(main, Note)); //要改
 
     Serial.print("Buzzer Sing: ");
     Serial.print("note=");
@@ -80,8 +80,8 @@ int Buzzer::ToneX(int main, int SoundIN)
         Tone = 9;
     else if (Tone == 7)
         Tone = 11;
-    // Serial.println(SoundOUT);
-    return int(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 + 0.5); //这里加0.5实现四舍五入
+    Serial.println(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 + 0.5);
+    return int(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 - 0.5); //这里加0.5实现四舍五入
 }
 
 Buzzer::Buzzer(uint8_t pin)

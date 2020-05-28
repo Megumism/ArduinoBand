@@ -4,11 +4,13 @@
 #include "keyboard44.h"
 #include "Score.h"
 #include "MyBuzzer.h"
+#include "MusicGame.h"
 
 LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 keyboard44 keyboard(11, 10, 9, 8, 7, 6, 5, 4);
 Buzzer buzzer(2);
 Score score;
+MusicGame musicGame;
 
 void setup()
 {
@@ -67,7 +69,7 @@ void loop()
                 break;
             if (temp == '0')
                 continue;
-            buzzer.Sing(0, score.note[i]);
+            buzzer.Sing(score.Tone, score.note[i]);
         }
 
         lcd.begin(16, 2);
@@ -83,10 +85,12 @@ void loop()
         delay(1500);
     }
 
-    // //#.game
-    // else if (key == '#')
-    // {
-    // }
+    // //#.MusicGame
+    else if (key == '#')
+    {
+        for(int i = 0;i<28;i++)
+        buzzer.Sing(musicGame.defaultMain,musicGame.defaultScore[i],musicGame.defaultBPM);
+    }
 
     //D.Replay
     else if (key == 'D')
