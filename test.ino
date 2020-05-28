@@ -65,8 +65,10 @@ void loop()
             temp = score.writeNote(lcd, keyboard, i);
             if (temp == '-')
                 i--;
-            if (temp == 'D')
+            if (temp == 'D'){
+                score.note[i]=11111;
                 break;
+            }
             if (temp == '0')
                 continue;
             buzzer.Sing(score.Tone, score.note[i]);
@@ -88,8 +90,7 @@ void loop()
     // //#.MusicGame
     else if (key == '#')
     {
-        for(int i = 0;i<28;i++)
-        buzzer.Sing(musicGame.defaultMain,musicGame.defaultScore[i],musicGame.defaultBPM);
+        musicGame.play(lcd,keyboard,buzzer,musicGame.defaultScore);
     }
 
     //D.Replay

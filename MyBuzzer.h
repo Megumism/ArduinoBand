@@ -24,10 +24,8 @@
 
 class Buzzer
 {
-private:
-    uint8_t buzzerPin;
-
 public:
+    uint8_t buzzerPin;
     //主调映射函数
     int ToneX(int main, int SoundIN);
     //唱一段

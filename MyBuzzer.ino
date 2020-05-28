@@ -80,7 +80,7 @@ int Buzzer::ToneX(int main, int SoundIN)
         Tone = 9;
     else if (Tone == 7)
         Tone = 11;
-    Serial.println(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 + 0.5);
+    // Serial.println(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 + 0.5);
     return int(pow(2, (main + Tone + Height * 12 + UpDown) / 12.0) * C3 - 0.5); //这里加0.5实现四舍五入
 }
 
