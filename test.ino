@@ -75,10 +75,9 @@ void loop()
             buzzer.Sing(0, score.note[i], score.pace[i]);
         }
 
-        // lcd.begin(16, 2);
-        // lcd.print("  Playing...");
-        delay(1500);
-
+        lcd.begin(16, 2);
+        lcd.print("  Playing...");
+        delay(300);
         buzzer.Sing(score);
 
         //complimentary: Amazing!|Back to menu..
