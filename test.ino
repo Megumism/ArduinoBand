@@ -5,14 +5,9 @@
 #include "Score.h"
 #include "MyBuzzer.h"
 
-// LCD pin
 LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
-
-//define the 4*4 keyboard
 keyboard44 keyboard(11, 10, 9, 8, 7, 6, 5, 4);
-
 Buzzer buzzer(2);
-
 Score score;
 
 void setup()
@@ -72,7 +67,7 @@ void loop()
                 break;
             if (temp == '0')
                 continue;
-            buzzer.Sing(0, score.note[i], score.note[i]/1000);
+            buzzer.Sing(0, score.note[i]);
         }
 
         lcd.begin(16, 2);

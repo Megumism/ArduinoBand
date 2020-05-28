@@ -143,7 +143,10 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     }
     if (key == '8')
     {
-        note[num - 1] += 1000;
+        if (note[num - 1] >= 0)
+            note[num - 1] += 1000;
+        else
+            note[num - 1] -= 1000;
         return '-';
     }
     if (key == '0')
@@ -162,9 +165,9 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
         note[num] += 2;
     else if (buffer[0] == 'b')
         note[num] += 0;
+    note[num] += 1000;
     if (buffer[1] == '-')
         note[num] = 0 - note[num];
-    note[num] += 1000;
     length++;
     return '1';
 }

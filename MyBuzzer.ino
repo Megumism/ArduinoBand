@@ -7,7 +7,7 @@ void Buzzer::Sing(Score score)
     Serial.println(int(score.length));
     for (int i = 0; i < score.length; i++)
     {
-        if (score.note[i] != 0)
+        if (score.note[i] % 1000 != 0)
         {
             tone(buzzerPin, ToneX(score.Tone, score.note[i]));
             //输出日志
@@ -20,23 +20,23 @@ void Buzzer::Sing(Score score)
             Serial.print("]=");
             Serial.println(int(score.note[i] / 1000));
         }
-        delay(int(score.note[i]) * 60.0 / score.BPM);
+        delay(int(abs(score.note[i]) / 1000) * 60.0 / score.BPM * 1000);
     }
     noTone(buzzerPin);
     Serial.println("Buzzer Stop");
 }
 
-void Buzzer::Sing(int Main, int Note, char beat, int BPM)
+void Buzzer::Sing(int Main, int Note, int BPM)
 {
-    tone(buzzerPin, ToneX(0, Note));
+    tone(buzzerPin, ToneX(0, Note)); //要改
 
     Serial.print("Buzzer Sing: ");
     Serial.print("note=");
     Serial.print(Note);
     Serial.print(",beat=");
-    Serial.print(int(beat));
+    Serial.print(int(abs(Note) / 1000));
 
-    delay(int(beat) * 60.0 / BPM * 1000);
+    delay(int(abs(Note) / 1000) * 60.0 / BPM * 1000);
     noTone(buzzerPin);
 
     Serial.println(" Buzzer Stop");
@@ -48,19 +48,21 @@ int Buzzer::ToneX(int main, int SoundIN)
     char Height;
     char UpDown;
     int SoundOUT;
-    SoundIN %= 1000;
     if (SoundIN >= 0)
     {
+        SoundIN %= 1000;
         Tone = SoundIN % 100 / 10;
         Height = SoundIN / 100;
         UpDown = SoundIN % 10 - 1;
     }
     else
     {
+        SoundIN = -(abs(SoundIN) % 1000);
         Tone = (-SoundIN) % 100 / 10;
         Height = -(((-SoundIN) / 100) + 1);
         UpDown = (-SoundIN % 10) - 1;
     }
+    // Serial.println(int(SoundIN));
     // Serial.println(int(Tone));
     // Serial.println(int(Height));
     // Serial.println(int(UpDown));
