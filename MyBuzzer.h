@@ -26,13 +26,14 @@ class Buzzer
 {
 private:
     uint8_t buzzerPin;
+
 public:
     //主调映射函数
     int ToneX(int main, int SoundIN);
     //唱一段
     void Sing(Score score);
     //唱一个
-    void Sing(int Main, int Note, char beat);
+    void Sing(int Main, int Note, char beat, int BPM = 120);
     //Beeee~
     void test();
     Buzzer(uint8_t pin);

@@ -59,7 +59,7 @@ void loop()
     {
         score.Initialize();           //everything initialized
         score.getTone(lcd, keyboard); //sequence: ABCDEFG
-        // score.getPace(lcd, keyboard);  //get the pace
+        score.getBPM(lcd, keyboard);  //get the pace
         // score.getMetre(lcd, keyboard); //get the metre
 
         for (int i = 0; i < 50; i++)
@@ -72,16 +72,6 @@ void loop()
                 break;
             if (temp == '0')
                 continue;
-
-            Serial.print("note[");
-            Serial.print(i);
-            Serial.print("]=");
-            Serial.println(score.note[i]);
-            Serial.print("beat[");
-            Serial.print(i);
-            Serial.print("]=");
-            Serial.println(int(score.pace[i]));
-
             buzzer.Sing(0, score.note[i], score.pace[i]);
         }
 

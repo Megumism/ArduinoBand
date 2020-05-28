@@ -16,7 +16,7 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     while (key != 'D' && key != 'C')
     {
         key = keyboard.getKey();
-        if (charnum)//先有音符才能有操作符
+        if (charnum) //先有音符才能有操作符
         {
             if (key == '#') //升
             {
@@ -145,7 +145,6 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
         length++;
         return '0';
     }
-    //只输-有bug！
     if (buffer[3])
         note[num] += 100 * (buffer[2] - '0') + 10 * (buffer[3] - '0');
     else
@@ -232,10 +231,58 @@ void Score::getTone(LiquidCrystal lcd, keyboard44 keyboard)
     lcd.begin(16, 2);
 }
 
+void Score::getBPM(LiquidCrystal lcd, keyboard44 keyboard)
+{
+    //get BPM: beat per minute
+    lcd.begin(16, 2);
+    lcd.print("Beat Per Min:");
+    lcd.setCursor(0, 1);
+    lcd.blink();
+    char key = 0;
+    bool paceLegacy = false;
+    while (key != 'D') // input end with D
+    {
+        key = keyboard.getKey();
+        if ((key != 0) && (key != 'D') && (key != 'A')) // normal output
+        {
+            lcd.print(key);
+            BPM = 10 * BPM + (key - '0');
+        }
+        if (key == 'A') // backspace
+        {
+            BPM /= 10;
+            lcd.clear();
+            lcd.print("Beat Per Min:");
+            lcd.setCursor(0, 1);
+            if (BPM != 0)
+                lcd.print(BPM);
+            lcd.blink();
+        }
+        if (key == 'D' && (BPM >= 300 || BPM == 0))
+        {
+            BPM = 0;
+            lcd.clear();
+            lcd.print("BPM illegal!");
+            delay(500);
+            lcd.begin(16, 2);
+            lcd.print("Beat Per Min:");
+            lcd.setCursor(0, 1);
+            continue;
+        }
+    }
+    Serial.print("EXIT (form getBPM) BPM=");
+    Serial.println(BPM);
+    lcd.begin(16, 2);
+}
+
 void Score::Initialize()
 {
-    int note[50] = {0};
-    char pace[50] = {0};
-    char length = 0;
-    char cursorX = 0, cursorY = 0;
+    BPM = 0;
+    for (int i = 0; i < length; i++)
+    {
+        note[i] = {0};
+        pace[i] = {0};
+    }
+    length = 0;
+    cursorX = 0, cursorY = 0;
 }

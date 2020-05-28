@@ -2,37 +2,44 @@
 
 void Buzzer::Sing(Score score)
 {
+    Serial.print("Buzzer Sing: ");
     Serial.print("length=");
     Serial.println(int(score.length));
     for (int i = 0; i < score.length; i++)
     {
-        Serial.print("note[");
-        Serial.print(i);
-        Serial.print("]=");
-        Serial.println(score.note[i]);
-        Serial.print("beat[");
-        Serial.print(i);
-        Serial.print("]=");
-        Serial.println(int(score.pace[i]));
-
         if (score.note[i] != 0)
         {
             tone(buzzerPin, ToneX(score.Tone, score.note[i]));
-            Serial.print("Buzzer Singing");
+            //输出日志
+            Serial.print("note[");
+            Serial.print(i);
+            Serial.print("]=");
+            Serial.print(score.note[i]);
+            Serial.print(",beat[");
+            Serial.print(i);
+            Serial.print("]=");
+            Serial.println(int(score.pace[i]));
         }
-        delay(int(score.pace[i]) * 500); //500要改掉的
+        delay(int(score.pace[i]) * 60.0 / score.BPM * 1000);
     }
     noTone(buzzerPin);
-    Serial.print("Buzzer Stoped");
+    Serial.println("Buzzer Stop");
 }
 
-void Buzzer::Sing(int Main, int Note, char beat)
+void Buzzer::Sing(int Main, int Note, char beat, int BPM)
 {
     tone(buzzerPin, ToneX(0, Note));
-    Serial.print("Buzzer Singing");
-    delay(int(beat) * 500);
+
+    Serial.print("Buzzer Sing: ");
+    Serial.print("note=");
+    Serial.print(Note);
+    Serial.print(",beat=");
+    Serial.print(int(beat));
+
+    delay(int(beat) * 60.0 / BPM * 1000);
     noTone(buzzerPin);
-    Serial.print("Buzzer Stoped");
+
+    Serial.println(" Buzzer Stop");
 }
 
 int Buzzer::ToneX(int main, int SoundIN)
