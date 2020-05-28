@@ -11,8 +11,7 @@ private:
 
 public:
     int BPM = 0;
-    int note[50] = {0}; //例：-171
-    char pace[50] = {0};
+    int note[50] = {0}; //例：-1171 节拍-音-升降 1拍降2八度7无升降
     char length = 0;
     int Tone = 0;
     //返回0表示休止，返回-表示延音，返回1表示正常音符

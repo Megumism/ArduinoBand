@@ -72,7 +72,7 @@ void loop()
                 break;
             if (temp == '0')
                 continue;
-            buzzer.Sing(0, score.note[i], score.pace[i]);
+            buzzer.Sing(0, score.note[i], score.note[i]/1000);
         }
 
         lcd.begin(16, 2);

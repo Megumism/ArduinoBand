@@ -18,9 +18,9 @@ void Buzzer::Sing(Score score)
             Serial.print(",beat[");
             Serial.print(i);
             Serial.print("]=");
-            Serial.println(int(score.pace[i]));
+            Serial.println(int(score.note[i] / 1000));
         }
-        delay(int(score.pace[i]) * 60.0 / score.BPM * 1000);
+        delay(int(score.note[i]) * 60.0 / score.BPM);
     }
     noTone(buzzerPin);
     Serial.println("Buzzer Stop");
@@ -48,6 +48,7 @@ int Buzzer::ToneX(int main, int SoundIN)
     char Height;
     char UpDown;
     int SoundOUT;
+    SoundIN %= 1000;
     if (SoundIN >= 0)
     {
         Tone = SoundIN % 100 / 10;

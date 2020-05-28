@@ -143,13 +143,12 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     }
     if (key == '8')
     {
-        pace[num - 1]++;
+        note[num - 1] += 1000;
         return '-';
     }
     if (key == '0')
     {
-        note[num] = 0;
-        pace[num] = 1;
+        note[num] = 1000;
         length++;
         return '0';
     }
@@ -165,7 +164,7 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
         note[num] += 0;
     if (buffer[1] == '-')
         note[num] = 0 - note[num];
-    pace[num] = 1;
+    note[num] += 1000;
     length++;
     return '1';
 }
@@ -247,7 +246,6 @@ void Score::getBPM(LiquidCrystal lcd, keyboard44 keyboard)
     lcd.setCursor(0, 1);
     lcd.blink();
     char key = 0;
-    bool paceLegacy = false;
     while (key != 'D') // input end with D
     {
         key = keyboard.getKey();
@@ -289,7 +287,6 @@ void Score::Initialize()
     for (int i = 0; i < length; i++)
     {
         note[i] = {0};
-        pace[i] = {0};
     }
     length = 0;
     cursorX = 0, cursorY = 0;
