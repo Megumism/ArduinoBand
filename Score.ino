@@ -138,6 +138,7 @@ char Score::writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num)
     cursorX++; //空一格
     if (key == 'D' && !charnum)
     {
+        note[num]=11111;
         Serial.println("EXIT (from writeNote)");
         return 'D';
     }

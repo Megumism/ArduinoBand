@@ -1,6 +1,6 @@
 #include "MusicGame.h"
 
-void MusicGame::play(LiquidCrystal lcd, keyboard44 keyboard, Buzzer buzzer, int Note[], int main, int BPM)
+void MusicGame::play(LiquidCrystal lcd, keyboard44 keyboard, Buzzer buzzer, int Note[], int length, int main, int BPM)
 {
     long int startTime = millis();
     float noteTime = 60000.0 / BPM; //单个音节持续的毫秒数
@@ -9,12 +9,6 @@ void MusicGame::play(LiquidCrystal lcd, keyboard44 keyboard, Buzzer buzzer, int 
     int timeCount = 0;
     bool buzzerOn = false;
     char buffer[17];
-    srand(millis());
-
-    for (int i = 0; i < 17; i++)
-    {
-        buffer[i] = ' ';
-    }
 
     while (Note[noteCount] != 11111)
     {
@@ -30,22 +24,24 @@ void MusicGame::play(LiquidCrystal lcd, keyboard44 keyboard, Buzzer buzzer, int 
             buzzerOn = false;
             noTone(buzzer.buzzerPin);
         }
-        if (millis() - startTime >= noteTime * timeCount){
-            timeCount++;
+        if (millis() - startTime >= 1000 * timeCount)
+        {
+            lcd.begin(16, 2);
+            lcd.print("      Playing...");
+            lcd.setCursor(0, 0);
+            lcd.print(timeCount);
+            lcd.print("s");
+            lcd.setCursor(0, 1);
             for (int i = 0; i < 16; i++)
             {
-                buffer[i] = buffer[i + 1];
+                if(i<16.0 * noteCount / length)
+                lcd.print("=");
+                else
+                lcd.print("-");
             }
-            if (rand() > 0.5 * RAND_MAX)
-            {
-                buffer[16] = '-';
-            }
-            else
-                buffer[16] = ' ';
-
-            lcd.begin(16, 2);
-            lcd.println(buffer);
+            timeCount++;
         }
     }
+    delay(abs(Note[noteCount - 1]) / 1000 * noteTime);
     noTone(buzzer.buzzerPin);
 };

@@ -36,14 +36,16 @@ void loop()
     lcd.begin(16, 2);
     if (score.length)
     {
-        lcd.print("*:Song  D:Replay");
+        lcd.print("    #:Play     ");
+        lcd.setCursor(0, 1); //设置光标到第二行第一列
+        lcd.print("   *:Remake    ");
     }
     else
     {
-        lcd.print("     *:Song     ");
+        lcd.print("     #:Play    ");
+        lcd.setCursor(0, 1); //设置光标到第二行第一列
+        lcd.print("  *:Make Song  ");
     }
-    lcd.setCursor(0, 1); //设置光标到第二行第一列
-    lcd.print("     #:Game");
 
     int key = 0;
     while (key == 0)
@@ -87,25 +89,26 @@ void loop()
         delay(1500);
     }
 
-    // //#.MusicGame
-    else if (key == '#')
+    //#.Default
+    else if (key == '#' && !score.length)
     {
         musicGame.play(lcd,keyboard,buzzer,musicGame.defaultScore);
     }
 
-    //D.Replay
-    else if (key == 'D')
+    //#.Guess
+    else if (key == '#' && score.length)
     {
         lcd.begin(16, 2);
         lcd.print("  Replaying...");
-        buzzer.Sing(score); //play the music
-        delay(500);         //stop for a while
-
+        // buzzer.Sing(score); //play the music
+        // delay(500);         //stop for a while
+        musicGame.play(lcd,keyboard,buzzer,score.note,score.length,score.Tone,score.BPM);
+        delay(500);
         //complimentary: Amazing!|Back to menu..
         lcd.begin(16, 2);
         lcd.print("    Amazing!");
         lcd.setCursor(0, 1);
         lcd.print(" Back to menu..");
-        delay(1000);
+        delay(500);
     }
 }
