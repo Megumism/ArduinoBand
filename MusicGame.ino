@@ -16,7 +16,14 @@ void MusicGame::play(LiquidCrystal lcd, keyboard44 keyboard, Buzzer buzzer, int 
         {
             buzzerOn = true;
             paceCount += abs(Note[noteCount]) / 1000;
-            tone(buzzer.buzzerPin, buzzer.ToneX(main, Note[noteCount]));
+            if (Note[noteCount] % 1000 != 0)
+            {
+                tone(buzzer.buzzerPin, buzzer.ToneX(main, Note[noteCount]));
+            }
+            else
+            {
+                noTone(buzzer.buzzerPin);
+            }
             noteCount++;
         }
         else if (millis() - startTime >= noteTime * paceCount)
@@ -34,10 +41,10 @@ void MusicGame::play(LiquidCrystal lcd, keyboard44 keyboard, Buzzer buzzer, int 
             lcd.setCursor(0, 1);
             for (int i = 0; i < 16; i++)
             {
-                if(i<16.0 * noteCount / length)
-                lcd.print("=");
+                if (i < 16.0 * noteCount / length)
+                    lcd.print("=");
                 else
-                lcd.print("-");
+                    lcd.print("-");
             }
             timeCount++;
         }

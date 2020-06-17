@@ -17,7 +17,7 @@ public:
     //返回0表示休止，返回-表示延音，返回1表示正常音符
     char writeNote(LiquidCrystal lcd, keyboard44 keyboard, int num);
     void getTone(LiquidCrystal lcd, keyboard44 keyboard);
-    void getBPM(LiquidCrystal lcd, keyboard44 keyboard);
+    bool getBPM(LiquidCrystal lcd, keyboard44 keyboard);
     void getMetre(LiquidCrystal lcd, keyboard44 keyboard);
     void Initialize();
 };

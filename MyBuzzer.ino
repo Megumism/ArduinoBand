@@ -7,18 +7,21 @@ void Buzzer::Sing(Score score)
     Serial.println(int(score.length));
     for (int i = 0; i < score.length; i++)
     {
+        //输出日志
+        Serial.print("note[");
+        Serial.print(i);
+        Serial.print("]=");
+        Serial.print(score.note[i]);
+        Serial.print(",beat[");
+        Serial.print(i);
+        Serial.print("]=");
+        Serial.println(int(score.note[i] / 1000));
         if (score.note[i] % 1000 != 0)
         {
             tone(buzzerPin, ToneX(score.Tone, score.note[i]));
-            //输出日志
-            Serial.print("note[");
-            Serial.print(i);
-            Serial.print("]=");
-            Serial.print(score.note[i]);
-            Serial.print(",beat[");
-            Serial.print(i);
-            Serial.print("]=");
-            Serial.println(int(score.note[i] / 1000));
+        }
+        else{
+            noTone(buzzerPin);
         }
         delay(int(abs(score.note[i]) / 1000) * 60.0 / score.BPM * 1000);
     }

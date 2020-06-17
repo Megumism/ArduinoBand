@@ -58,7 +58,7 @@ void loop()
     {
         score.Initialize();           //everything initialized
         score.getTone(lcd, keyboard); //sequence: ABCDEFG
-        score.getBPM(lcd, keyboard);  //get the pace
+        while(!score.getBPM(lcd, keyboard));  //get the pace
         // score.getMetre(lcd, keyboard); //get the metre
 
         for (int i = 0; i < 50; i++)

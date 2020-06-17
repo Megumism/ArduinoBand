@@ -242,7 +242,7 @@ void Score::getTone(LiquidCrystal lcd, keyboard44 keyboard)
     lcd.begin(16, 2);
 }
 
-void Score::getBPM(LiquidCrystal lcd, keyboard44 keyboard)
+bool Score::getBPM(LiquidCrystal lcd, keyboard44 keyboard)
 {
     //get BPM: beat per minute
     lcd.begin(16, 2);
@@ -277,12 +277,13 @@ void Score::getBPM(LiquidCrystal lcd, keyboard44 keyboard)
             lcd.begin(16, 2);
             lcd.print("Beat Per Min:");
             lcd.setCursor(0, 1);
-            continue;
+            return false;
         }
     }
     Serial.print("EXIT (form getBPM) BPM=");
     Serial.println(BPM);
     lcd.begin(16, 2);
+    return true;
 }
 
 void Score::Initialize()
